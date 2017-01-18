@@ -11,7 +11,6 @@ import ExpenseReport from './ExpenseReport'
 
 injectTapEventPlugin()
 
-
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     addExpense: newExpense
@@ -20,22 +19,16 @@ const mapDispatchToProps = (dispatch) => {
 
 class ExpenseApp extends Component
 {
-  handleSubmit = (values) => {
+  handleSubmit = (values) => this.props.addExpense(values)
 
-   this.props.addExpense(values)
-  }
-
-  render() {
-
-    return (
-      <MuiThemeProvider muiTheme={getMuiTheme()}>
-      	<Paper style={{margin: 30}}>
-          <ExpenseForm onSubmit={this.handleSubmit}/>
-          <ExpenseReport/>
-        </Paper>
-      </MuiThemeProvider>
-    )
-  }
+  render = () => (
+    <MuiThemeProvider muiTheme={getMuiTheme()}>
+    	<Paper style={{margin: 30}}>
+        <ExpenseForm onSubmit={this.handleSubmit}/>
+        <ExpenseReport/>
+      </Paper>
+    </MuiThemeProvider>
+  )
 }
 
 export default connect(null, mapDispatchToProps)(ExpenseApp)

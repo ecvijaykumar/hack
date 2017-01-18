@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -31,14 +31,12 @@ const renderExpense = ({date, item, amount, location}, id) => (
 
 const renderExpenses = (expenses) => (
     <TableBody>
-    {
-      expenses.map((expense, id) => renderExpense(expense, id))
-    }
+      { expenses.map((expense, id) => renderExpense(expense, id)) }
     </TableBody>
 )
 
 let  ExpenseReport = ({expenses}) => {
-  if (expenses.length == 0) return null
+  if (expenses.length === 0) return null
   return(
     <Table>
       {renderExpenseHeader()}
