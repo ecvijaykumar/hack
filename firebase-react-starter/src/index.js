@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import * as firebase from 'firebase'
-
+import { Provider } from 'react-redux'
+import store from './store'
 // Initialize Firebase
  var config = {
    apiKey: "AIzaSyD5vGPCHzwxpBwIbhHKkyvQLyn2itGlkQk",
@@ -15,7 +16,10 @@ import * as firebase from 'firebase'
 
 firebase.initializeApp(config)
 
+
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );

@@ -4,7 +4,12 @@
   "private": true,
   "devDependencies": {
     "firebase": "^3.6.4",
-    "react-scripts": "0.8.4"
+    "material-ui": "^0.16.7",
+    "react-redux": "^5.0.2",
+    "react-scripts": "0.8.4",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
+    "redux-form": "^6.4.3"
   },
   "dependencies": {
     "react": "^15.4.1",
