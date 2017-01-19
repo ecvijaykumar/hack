@@ -1,13 +1,5 @@
 import React from 'react'
-
-
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-
-import { connect } from 'react-redux'
-
-const mapStateToProps = (state) => {
-  return { expenses: state.expenses}
-}
 
 const renderExpenseHeader = () => (
     <TableHeader>
@@ -35,14 +27,12 @@ const renderExpenses = (expenses) => (
     </TableBody>
 )
 
-let  ExpenseReport = ({expenses}) => {
-  if (expenses.length === 0) return null
-  return(
-    <Table>
-      {renderExpenseHeader()}
-      {renderExpenses(expenses)}
-    </Table>
-  )
-}
+const ExpenseList = ({expenses}) => (
+  <Table>
+    {renderExpenseHeader()}
+    {renderExpenses(expenses)}
+  </Table>
+)
 
-export default connect(mapStateToProps)(ExpenseReport)
+
+export default ExpenseList

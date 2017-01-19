@@ -1,1 +1,2 @@
 export const NEW_EXPENSE = 'NEW_EXPENSE'
+export const FETCH_EXPENSES = 'FETCH_EXPENSES'
