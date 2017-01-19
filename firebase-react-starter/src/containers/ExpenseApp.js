@@ -1,5 +1,5 @@
 import React from 'react'
-import injectTapEventPlugin from 'react-tap-event-plugin'
+
 import { Paper } from 'material-ui'
 import { MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import { connect } from 'react-redux'
@@ -9,7 +9,7 @@ import ExpenseForm  from '../components/ExpenseForm'
 import ExpenseList from '../components/ExpenseList'
 import ExpenseSummary from '../components/ExpenseSummary'
 
-injectTapEventPlugin()
+
 
 const PaperBorder = (props) => (
     <Paper style={{margin: 30}}>

@@ -4,6 +4,12 @@ import App from './App';
 import './index.css';
 import * as firebase from 'firebase'
 import { Provider } from 'react-redux'
+import { Router, Route, browserHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import ChatRoom from './components/ChatRoom'
+import TodoApp from './components/TodoApp'
+import ExpenseApp from './containers/ExpenseApp'
 import store from './store'
 // Initialize Firebase
  var config = {
@@ -15,11 +21,21 @@ import store from './store'
  };
 
 firebase.initializeApp(config)
+injectTapEventPlugin()
 
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    { /* Tell the Router to use our enhanced history */ }
+   <Router history={history}>
+    <Route path="/" component={App} />
+    <Route path="/expenses" component={ExpenseApp}/>
+
+    <Route path="/todo" component={TodoApp} />
+    <Route path="/chat" component={ChatRoom} />
+  </Router>
   </Provider>,
   document.getElementById('root')
 );
