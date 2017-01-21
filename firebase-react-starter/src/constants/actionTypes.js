@@ -1,2 +1,4 @@
 export const NEW_EXPENSE = 'NEW_EXPENSE'
 export const FETCH_EXPENSES = 'FETCH_EXPENSES'
+export const SHOW_SIDEBAR = 'SHOW_SIDEBAR'
+export const HIDE_SIDEBAR = 'HIDE_SIDEBAR'

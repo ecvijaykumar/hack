@@ -1,6 +1,6 @@
 import React from 'react'
 import { reduxForm, Field } from 'redux-form'
-import { AppBar, Paper, TextField, RaisedButton } from 'material-ui'
+import { Paper, TextField, RaisedButton } from 'material-ui'
 
 const renderTextField = ({input, label, meta: { touched, error}, ...custom}) => (
   <div>
@@ -25,7 +25,7 @@ const ExpenseForm = props => {
   const { handleSubmit } = props
     return (
       <Paper>
-        <AppBar title="Add Expense" />
+        <h1>Add Expense </h1>
         <form onSubmit={handleSubmit}>
           <Field name="amount" component={renderTextField} label="Amount"/>
           <Field name="item" component={renderTextField} label="Item"/>
