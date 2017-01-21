@@ -23,15 +23,30 @@ const renderButton = ({input, label, meta: { touched, error}, ...custom} ) => (
 
 const ExpenseForm = props => {
   const { handleSubmit } = props
+  const style = {
+    formContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      flexWrap: 'wrap'
+
+    }
+  }
     return (
-      <Paper>
-        <h1>Add Expense </h1>
-        <form onSubmit={handleSubmit}>
+      <Paper style={style.formContainer}>
+
+        <form style={style.form} onSubmit={handleSubmit}>
           <Field name="amount" component={renderTextField} label="Amount"/>
           <Field name="item" component={renderTextField} label="Item"/>
           <Field name="location" component={renderTextField} label="Spent at"/>
           <Field name="date" component={renderTextField} label="date"/>
-          <Field name="submit" component={renderButton} label="New"
+          <Field name="submit" component={renderButton} label="Add"
             style={{'width' : '100%'}}/>
 
         </form>
