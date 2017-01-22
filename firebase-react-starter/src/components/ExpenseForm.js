@@ -21,7 +21,10 @@ const renderButton = ({input, label, meta: { touched, error}, ...custom} ) => (
   </div>
 )
 
-const renderCategory = () => {
+const renderCategory = (props) => {
+  const {
+    input: { onChange }
+  } = props
   const categories = [
     'Groceries',
     'Movies',
@@ -29,16 +32,12 @@ const renderCategory = () => {
     'Auto'
   ]
 
-  const handleUpdateInput = (value) => {
-    console.log(value)
-
-  }
   return(
     <AutoComplete
       hintText="Category"
       filter={AutoComplete.fuzzyFilter}
       dataSource={categories}
-      onUpdateInput={handleUpdateInput}
+      onUpdateInput={value => onChange(value)}
       maxSearchResults={5}
     />
   )
@@ -48,7 +47,7 @@ const renderDate = () => {
   let maxDate = new Date()
   let minDate = new Date()
   minDate.setFullYear(minDate.getFullYear() -1)
-  console.log(minDate)
+
 
   return (
     <DatePicker onChange={(unused, date) =>{ console.log(date)}}
