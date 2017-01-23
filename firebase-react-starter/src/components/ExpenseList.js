@@ -4,20 +4,20 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 const renderExpenseHeader = () => (
     <TableHeader>
       <TableRow>
-        <TableHeaderColumn>Date</TableHeaderColumn>
+        <TableHeaderColumn>Spent</TableHeaderColumn>
+        <TableHeaderColumn>On</TableHeaderColumn>
         <TableHeaderColumn>Item</TableHeaderColumn>
-        <TableHeaderColumn>Amount</TableHeaderColumn>
-        <TableHeaderColumn>Spent At</TableHeaderColumn>
+        <TableHeaderColumn>At</TableHeaderColumn>
       </TableRow>
     </TableHeader>
 )
 
-const renderExpense = ({date, item, amount, location}, id) => (
+const renderExpense = ({on, item, amount, at}, id) => (
     <TableRow key={id}>
-      <TableRowColumn>{date}</TableRowColumn>
-      <TableRowColumn>{item}</TableRowColumn>
       <TableRowColumn>{amount}</TableRowColumn>
-      <TableRowColumn>{location}</TableRowColumn>
+      <TableRowColumn>{on}</TableRowColumn>
+      <TableRowColumn>{item}</TableRowColumn>
+      <TableRowColumn>{at}</TableRowColumn>
     </TableRow>
 )
 

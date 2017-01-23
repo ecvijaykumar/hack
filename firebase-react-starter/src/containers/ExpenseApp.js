@@ -31,7 +31,9 @@ const ExpenseApp = props => (
   <MuiThemeProvider muiTheme={getMuiTheme()}>
     <div>
       <PaperBorder>
-        <ExpenseForm onSubmit={props.addExpense}/>
+        <ExpenseForm onSubmit={props.addExpense}
+            items={props.expenseFields.items}
+            at={props.expenseFields.at}/>
       </PaperBorder>
       <PaperBorder>
         <ExpenseSummary total={props.total}/>
@@ -44,7 +46,8 @@ const ExpenseApp = props => (
 const mapStateToProps = (state) => (
   {
     expenses: state.expenses ,
-    total: state.total
+    total: state.total,
+    expenseFields: state.expenseFields
   }
 )
 

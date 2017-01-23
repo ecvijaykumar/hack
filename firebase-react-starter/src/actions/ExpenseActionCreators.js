@@ -5,16 +5,31 @@ import { NEW_EXPENSE,
   HIDE_SIDEBAR } from '../constants/actionTypes.js'
 
 import { push } from 'react-router-redux'
+import {reset} from 'redux-form'
 
-export const newExpense = (expense) => {
+const formatDate = ds => {
+  const d = new Date(ds)
+  const s =  `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`
+  console.log(s)
+  return s
+}
+
+const saveExpense = (expense) => {
   return {
     type: NEW_EXPENSE,
     payload: {
       amount: expense.amount,
       item: expense.item || "misc",
-      date: expense.date || new Date().toString(),
-      location: expense.location || "Unknown"
+      on: formatDate(expense.on) || new Date().toString(),
+      at: expense.at || "Unknown"
     }
+  }
+}
+
+export const newExpense = (expense) => {
+  return (dispatch) => {
+    dispatch(saveExpense(expense))
+    dispatch(reset('expenseForm'))
   }
 }
 
@@ -33,20 +48,13 @@ export const hideSideBar = () => ({
 })
 
 export const loadPage = (url) =>{
-  console.log("load page", url)
   const x = push(url)
-  console.log(x)
   return x
 }
 
 export const sideBarSelection = (index, menu) => {
   return (dispatch) => {
-
     dispatch(hideSideBar())
     dispatch(loadPage(menu.url))
-//    let ret = push(menu.url)
-//    console.log(ret)
-//    dispatch(push(menu.url))
-
   }
 }

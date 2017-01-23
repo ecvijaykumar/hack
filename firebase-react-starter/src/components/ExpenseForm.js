@@ -21,36 +21,35 @@ const renderButton = ({input, label, meta: { touched, error}, ...custom} ) => (
   </div>
 )
 
-const renderCategory = (props) => {
-  const {
-    input: { onChange }
-  } = props
-  const categories = [
-    'Groceries',
-    'Movies',
-    'Medical',
-    'Auto'
-  ]
+const renderComboField = (props) => {
 
+  const {
+    src,
+    label,
+
+    input: { value, onChange }
+  } = props
+  if (src === undefined) return null
   return(
     <AutoComplete
-      hintText="Category"
+      hintText={label}
+      searchText={value}
       filter={AutoComplete.fuzzyFilter}
-      dataSource={categories}
+      dataSource={src}
       onUpdateInput={value => onChange(value)}
       maxSearchResults={5}
     />
   )
 }
 
-const renderDate = () => {
+const renderDate = props => {
   let maxDate = new Date()
   let minDate = new Date()
   minDate.setFullYear(minDate.getFullYear() -1)
-
+  const { input: { onChange}} = props
 
   return (
-    <DatePicker onChange={(unused, date) =>{ console.log(date)}}
+    <DatePicker onChange={(unused, date) => onChange(date)}
       floatingLabelText="Spent On"
       defaultDate={maxDate}
       minDate={minDate}
@@ -61,7 +60,8 @@ const renderDate = () => {
 }
 
 const ExpenseForm = props => {
-  const { handleSubmit } = props
+  const { items, at, handleSubmit } = props
+
   const style = {
     formContainer: {
       display: 'flex',
@@ -77,16 +77,15 @@ const ExpenseForm = props => {
 
     }
   }
+
     return (
       <Paper style={style.formContainer}>
 
         <form style={style.form} onSubmit={handleSubmit}>
-          <Field name="amount" component={renderTextField} label="Amount"/>
-          <Field name="item" component={renderTextField} label="Item"/>
-          <Field name="location" component={renderTextField} label="Spent at"/>
-          <Field name="date" component={renderDate} label="date"/>
-          <Field name="category" component={renderCategory} label="category"
- />
+          <Field name="amount" component={renderTextField} label="Spent $"/>
+          <Field name="item" component={renderComboField} src={items} label="for item" />
+          <Field name="at" component={renderComboField} src={at} label="at"/>
+          <Field name="on" component={renderDate} label="on date"/>
            <Field name="submit" component={renderButton} label="Add"
             style={{'width' : '100%'}}/>
 
