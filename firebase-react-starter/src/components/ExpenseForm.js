@@ -32,8 +32,9 @@ const renderComboField = (props) => {
   if (src === undefined) return null
   return(
     <AutoComplete
-      hintText={label}
+      floatingLabelText={label}
       searchText={value}
+      openOnFocus={true}
       filter={AutoComplete.fuzzyFilter}
       dataSource={src}
       onUpdateInput={value => onChange(value)}
@@ -46,15 +47,20 @@ const renderDate = props => {
   let maxDate = new Date()
   let minDate = new Date()
   minDate.setFullYear(minDate.getFullYear() -1)
-  const { input: { onChange}} = props
-
+  const { input: { value, onChange}} = props
+//        { /* value={value} */ }
   return (
     <DatePicker onChange={(unused, date) => onChange(date)}
+      onFocus={(e) => console.log("dTE FOCU ", e)}
+
       floatingLabelText="Spent On"
+
+
       defaultDate={maxDate}
       minDate={minDate}
       maxDate={maxDate}
       autoOk={true}
+      container='inline'
     />
   )
 }
@@ -69,12 +75,13 @@ const ExpenseForm = props => {
       justifyContent: 'center'
     },
     form: {
+      padding: 10,
+      minHeight: '200',
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-around',
       flexWrap: 'wrap'
-
     }
   }
 
@@ -82,12 +89,16 @@ const ExpenseForm = props => {
       <Paper style={style.formContainer}>
 
         <form style={style.form} onSubmit={handleSubmit}>
+
           <Field name="amount" component={renderTextField} label="Spent $"/>
           <Field name="item" component={renderComboField} src={items} label="for item" />
           <Field name="at" component={renderComboField} src={at} label="at"/>
           <Field name="on" component={renderDate} label="on date"/>
-           <Field name="submit" component={renderButton} label="Add"
-            style={{'width' : '100%'}}/>
+
+
+
+          <Field name="submit" component={renderButton} label="Add"
+            style={{'width': '100%'}}/>
 
         </form>
       </Paper>
