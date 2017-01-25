@@ -1,7 +1,7 @@
 import { reducer as formReducer } from 'redux-form'
 import { combineReducers} from 'redux'
 import { newExpense, totalExpenses } from './expense'
-import { expenseFields } from './expenseFields'
+import  expenseFields  from './expenseFields'
 import { sideBarReducer } from './sidebar'
 import { routerReducer } from 'react-router-redux'
 

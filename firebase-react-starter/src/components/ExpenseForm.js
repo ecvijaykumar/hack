@@ -2,8 +2,8 @@ import React from 'react'
 import { reduxForm, Field } from 'redux-form'
 import { Paper, TextField, RaisedButton, DatePicker, AutoComplete} from 'material-ui'
 
-const renderTextField = ({input, label, meta: { touched, error}, ...custom}) => (
-  <div>
+const renderTextField = ({input, label, meta: { touched, error}, style, ...custom}) => (
+  <div style={style}>
     <TextField hintText={label}
       floatingLabelText={label}
       errorText={touched && error}
@@ -13,8 +13,8 @@ const renderTextField = ({input, label, meta: { touched, error}, ...custom}) => 
   </div>
 )
 
-const renderButton = ({input, label, meta: { touched, error}, ...custom} ) => (
-  <div>
+const renderButton = ({input, label, meta: { touched, error}, style, ...custom} ) => (
+  <div style={style}>
     <RaisedButton label={label} primary={true} type="submit"
       {...custom}
     />
@@ -22,15 +22,15 @@ const renderButton = ({input, label, meta: { touched, error}, ...custom} ) => (
 )
 
 const renderComboField = (props) => {
-
   const {
     src,
     label,
-
+    style,
     input: { value, onChange }
   } = props
   if (src === undefined) return null
   return(
+    <div style={style}>
     <AutoComplete
       floatingLabelText={label}
       searchText={value}
@@ -40,6 +40,7 @@ const renderComboField = (props) => {
       onUpdateInput={value => onChange(value)}
       maxSearchResults={5}
     />
+  </div>
   )
 }
 
@@ -47,21 +48,20 @@ const renderDate = props => {
   let maxDate = new Date()
   let minDate = new Date()
   minDate.setFullYear(minDate.getFullYear() -1)
-  const { input: { value, onChange}} = props
-//        { /* value={value} */ }
+  const { style, input: { onChange}} = props
+
+
   return (
+    <div style={style}>
     <DatePicker onChange={(unused, date) => onChange(date)}
-      onFocus={(e) => console.log("dTE FOCU ", e)}
-
       floatingLabelText="Spent On"
-
-
       defaultDate={maxDate}
       minDate={minDate}
       maxDate={maxDate}
       autoOk={true}
       container='inline'
     />
+  </div>
   )
 }
 
@@ -71,35 +71,37 @@ const ExpenseForm = props => {
   const style = {
     formContainer: {
       display: 'flex',
-      alignItems: 'center',
       justifyContent: 'center'
     },
     form: {
-      padding: 10,
-      minHeight: '200',
+      minHeight: 100,
       display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      flexWrap: 'wrap'
+      alignItems: 'center'
+    },
+    fieldStyle: {
+      padding: 20
     }
   }
 
     return (
       <Paper style={style.formContainer}>
-
         <form style={style.form} onSubmit={handleSubmit}>
-
-          <Field name="amount" component={renderTextField} label="Spent $"/>
-          <Field name="item" component={renderComboField} src={items} label="for item" />
-          <Field name="at" component={renderComboField} src={at} label="at"/>
-          <Field name="on" component={renderDate} label="on date"/>
-
-
-
-          <Field name="submit" component={renderButton} label="Add"
-            style={{'width': '100%'}}/>
-
+          <Field name="amount" component={renderTextField}
+              style={style.fieldStyle}
+              label="Spent Amount ($)"/>
+          <Field name="item" component={renderComboField}
+              style={style.fieldStyle}
+              src={items}
+              label="for item" />
+          <Field name="at" component={renderComboField}
+              style={style.fieldStyle}
+              src={at} label="at"/>
+          <Field name="on" component={renderDate}
+              style={style.fieldStyle}
+              label="on date"/>
+          <Field name="submit" component={renderButton}
+            style={style.fieldStyle}
+            label="Add"/>
         </form>
       </Paper>
     )

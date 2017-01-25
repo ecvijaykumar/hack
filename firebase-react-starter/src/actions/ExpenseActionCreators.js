@@ -8,19 +8,23 @@ import { push } from 'react-router-redux'
 import {reset} from 'redux-form'
 
 const formatDate = ds => {
-  const d = new Date(ds)
-  const s =  `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`
-  console.log(s)
-  return s
+  let d;
+  if (ds) {
+    d = new Date(ds)
+  } else {
+    d = new Date()
+  }
+
+  return d.toLocaleDateString('en-US')
 }
 
 const saveExpense = (expense) => {
   return {
     type: NEW_EXPENSE,
     payload: {
-      amount: expense.amount,
+      amount: expense.amount || 0,
       item: expense.item || "misc",
-      on: formatDate(expense.on) || new Date().toString(),
+      on: formatDate(expense.on),
       at: expense.at || "Unknown"
     }
   }

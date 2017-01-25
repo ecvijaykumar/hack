@@ -11,6 +11,10 @@ const initialState = {
     {
       text: "New Expense",
       url : "/expenses"
+    },
+    {
+      text: "Expense Details",
+      url : "/showExpenses"
     }
   ]
 }

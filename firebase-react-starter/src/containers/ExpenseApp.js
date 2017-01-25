@@ -3,9 +3,7 @@ import React from 'react'
 import { Paper } from 'material-ui'
 import { MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { newExpense } from '../actions/ExpenseActionCreators'
-import ExpenseForm  from '../components/ExpenseForm'
+
 import ExpenseList from '../components/ExpenseList'
 import ExpenseSummary from '../components/ExpenseSummary'
 
@@ -31,12 +29,7 @@ const ExpenseApp = props => (
   <MuiThemeProvider muiTheme={getMuiTheme()}>
     <div>
       <PaperBorder>
-        <ExpenseForm onSubmit={props.addExpense}
-            items={props.expenseFields.items}
-            at={props.expenseFields.at}/>
-      </PaperBorder>
-      <PaperBorder>
-        <ExpenseSummary total={props.total}/>
+        {ExpenseSummary(props)}
       </PaperBorder>
       {renderExpenseList(props)}
     </div>
@@ -46,15 +39,9 @@ const ExpenseApp = props => (
 const mapStateToProps = (state) => (
   {
     expenses: state.expenses ,
-    total: state.total,
-    expenseFields: state.expenseFields
+    total: state.total
   }
 )
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    addExpense: newExpense
-  }, dispatch)
-)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpenseApp)
+export default connect(mapStateToProps)(ExpenseApp)

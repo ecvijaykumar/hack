@@ -9,6 +9,7 @@ import { Router, Route } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import ChatRoom from './components/ChatRoom'
 import TodoApp from './components/TodoApp'
+import ExpenseEntry from './containers/ExpenseEntry'
 import ExpenseApp from './containers/ExpenseApp'
 import store from './store'
 import history from './history'
@@ -32,7 +33,8 @@ ReactDOM.render(
     { /* Tell the Router to use our enhanced history */ }
    <Router history={history}>
     <Route path="/" component={App} >
-      <Route path="/expenses" component={ExpenseApp}/>
+      <Route path="/showExpenses" component={ExpenseApp}/>
+      <Route path="/expenses" component={ExpenseEntry}/>
     </Route>
     <Route path="/todo" component={TodoApp} />
     <Route path="/chat" component={ChatRoom} />
