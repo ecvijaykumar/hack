@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedNumber } from 'react-intl';
 
 const expenseGroupByPeriod = expenses => {
     if (expenses === undefined) return null
@@ -12,13 +13,13 @@ const expenseGroupByPeriod = expenses => {
     const results = expenses.reduce((results, e) => {
       const edate = new Date(e.on)
       if (edate === today) {
-        results['today'] += parseInt(e.amount)
+        results['today'] += parseInt(e.amount, 10)
       } else if (edate > lastWeek) {
-        results['lastWeek'] += parseInt(e.amount)
+        results['lastWeek'] += parseInt(e.amount, 10)
       } else if (edate > lastMonth) {
-          results['lastMonth'] += parseInt(e.amount)
+          results['lastMonth'] += parseInt(e.amount, 10)
       } else {
-        results['previous'] += parseInt(e.amount)
+        results['previous'] += parseInt(e.amount, 10)
       }
       return results
     }, { today: 0, lastWeek: 0, lastMonth : 0, previous: 0})
@@ -37,16 +38,24 @@ const renderExpenseDetails = expenses => {
     console.log(results)
 
     if (results['today']) {
-      eToday = <h2> Today you spent {results['today']} </h2>
+      eToday = <h2> Today you spent {' '}
+        <FormattedNumber value={results['today']} />
+      </h2>
     }
     if (results['lastWeek']) {
-      eLastWeek = <h2> Last week you spent {results['lastWeek']} </h2>
+      eLastWeek = <h2> Last week you spent {' '}
+        <FormattedNumber value={results['lastWeek']} />
+       </h2>
     }
     if (results['lastMonth']) {
-      eLastMonth = <h2>Since last month you sepnt {results['lastMonth']}</h2>
+      eLastMonth = <h2>Since last month you spent {' '}
+        <FormattedNumber value={results['lastMonth']} />
+      </h2>
     }
     if (results['previous']) {
-      etillLastMonth = <h2>Until last month you spent {results['previous']}</h2>
+      etillLastMonth = <h2>Until last month you spent {' '}
+        <FormattedNumber value={results['previous']}/>
+      </h2>
     }
     return (
     <div>
@@ -60,7 +69,7 @@ const renderExpenseDetails = expenses => {
 const ExpenseSummary = ({expenses, total}) => {
   return (
     <div>
-      <h1>Total expense so far: {total}</h1>
+      <h1>Total expense so far: <FormattedNumber value={total} /></h1>
       {renderExpenseDetails(expenses)}
     </div>
 

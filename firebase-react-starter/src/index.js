@@ -5,6 +5,8 @@ import './index.css';
 import * as firebase from 'firebase'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router'
+import { IntlProvider } from 'react-intl';
+
 
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import ChatRoom from './components/ChatRoom'
@@ -31,6 +33,7 @@ injectTapEventPlugin()
 ReactDOM.render(
   <Provider store={store}>
     { /* Tell the Router to use our enhanced history */ }
+     <IntlProvider locale="en">
    <Router history={history}>
     <Route path="/" component={App} >
       <Route path="/showExpenses" component={ExpenseApp}/>
@@ -39,6 +42,7 @@ ReactDOM.render(
     <Route path="/todo" component={TodoApp} />
     <Route path="/chat" component={ChatRoom} />
   </Router>
+</IntlProvider>
   </Provider>,
   document.getElementById('root')
 );
