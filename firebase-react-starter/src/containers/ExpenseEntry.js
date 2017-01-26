@@ -13,8 +13,8 @@ const ExpenseEntry = props => (
   <MuiThemeProvider muiTheme={getMuiTheme()}>
       <Paper style={{margin: 30}}>
         <ExpenseForm onSubmit={props.addExpense}
-            items={props.expenseFields.items}
-            at={props.expenseFields.at}/>
+            items={props.expenseFields.items.toArray()}
+            at={props.expenseFields.at.toArray()}/>
         <ExpenseSummary total={props.total}/>
       </Paper>
     </MuiThemeProvider>

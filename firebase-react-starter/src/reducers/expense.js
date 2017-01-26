@@ -1,14 +1,7 @@
 import { NEW_EXPENSE} from '../constants/actionTypes.js'
 
-const initialState = [
-  {
-    amount: 100,
-    on: "01/30/2016",
-    item: "gas",
-    at: "costco"
-  }
-]
-export const newExpense = (state = initialState, action) => {
+
+export const newExpense = (state = [], action) => {
   switch(action.type) {
     case NEW_EXPENSE:
       return [ ...state, action.payload]

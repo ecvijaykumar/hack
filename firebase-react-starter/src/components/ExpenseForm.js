@@ -29,6 +29,7 @@ const renderComboField = (props) => {
     input: { value, onChange }
   } = props
   if (src === undefined) return null
+  console.log(src)
   return(
     <div style={style}>
     <AutoComplete
@@ -37,7 +38,9 @@ const renderComboField = (props) => {
       openOnFocus={true}
       filter={AutoComplete.fuzzyFilter}
       dataSource={src}
-      onUpdateInput={value => onChange(value)}
+      onUpdateInput={value => { console.log("AC ", value) ;
+        onChange(value)
+    }}
       maxSearchResults={5}
     />
   </div>
