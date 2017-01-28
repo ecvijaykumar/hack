@@ -1,5 +1,6 @@
 import React from 'react'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import { camelCase} from '../lib/utils'
 
 const renderExpenseHeader = () => (
     <TableHeader>
@@ -16,8 +17,8 @@ const renderExpense = ({on, item, amount, at}, id) => (
     <TableRow key={id}>
       <TableRowColumn>{amount}</TableRowColumn>
       <TableRowColumn>{on}</TableRowColumn>
-      <TableRowColumn>{item}</TableRowColumn>
-      <TableRowColumn>{at}</TableRowColumn>
+      <TableRowColumn>{camelCase(item)}</TableRowColumn>
+      <TableRowColumn>{camelCase(at)}</TableRowColumn>
     </TableRow>
 )
 
