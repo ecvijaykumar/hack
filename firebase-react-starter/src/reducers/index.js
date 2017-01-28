@@ -5,6 +5,7 @@ import  expenseFields  from './expenseFields'
 import { sideBarReducer } from './sidebar'
 import { routerReducer } from 'react-router-redux'
 
+
 export default combineReducers({
   expenses: newExpense,
   total: totalExpenses,

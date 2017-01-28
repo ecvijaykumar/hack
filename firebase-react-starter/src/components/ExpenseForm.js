@@ -2,6 +2,17 @@ import React from 'react'
 import { reduxForm, Field } from 'redux-form'
 import { Paper, TextField, RaisedButton, DatePicker, AutoComplete} from 'material-ui'
 
+
+export const validate = values => {
+  const errors = {}
+  if (!values.amount) {
+    errors.amount = 'You forgot to eneter amount'
+  } else if (parseInt(values.amount, 10) >= 100000) {
+    errors.amount = "That's a huge amount"
+  }
+  return errors
+}
+
 const renderTextField = ({input, label, meta: { touched, error}, style, ...custom}) => (
   <div style={style}>
     <TextField hintText={label}
@@ -99,6 +110,7 @@ const ExpenseForm = props => {
           <Field name="at" component={renderComboField}
               style={style.fieldStyle}
               src={at} label="at"/>
+
           <Field name="on" component={renderDate}
               style={style.fieldStyle}
               label="on date"/>
@@ -111,5 +123,6 @@ const ExpenseForm = props => {
 }
 
 export default reduxForm({
-  form: 'expenseForm'
+  form: 'expenseForm',
+  validate,
 })(ExpenseForm)

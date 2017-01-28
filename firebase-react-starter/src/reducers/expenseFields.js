@@ -7,7 +7,6 @@ const atSet = Set()
 const expenseItems = (state, action) => {
   switch(action.type) {
     case NEW_EXPENSE:
-    console.log("add item", state)
         return state.add(action.payload.item)
     default:
       return state
@@ -17,7 +16,6 @@ const expenseItems = (state, action) => {
 const expenseAt = (state , action) => {
   switch(action.type) {
     case NEW_EXPENSE:
-    console.log("Add At", state)
       return state.add(action.payload.at)
     default:
       return state
