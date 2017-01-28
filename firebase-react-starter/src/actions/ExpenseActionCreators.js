@@ -6,6 +6,7 @@ import { NEW_EXPENSE,
 
 import { push } from 'react-router-redux'
 import {reset} from 'redux-form'
+import { decamelize} from '../lib/utils'
 
 const formatDate = ds => {
   let d;
@@ -18,14 +19,15 @@ const formatDate = ds => {
   return d.toLocaleDateString('en-US')
 }
 
+
 const saveExpense = (expense) => {
   return {
     type: NEW_EXPENSE,
     payload: {
       amount: expense.amount || 0,
-      item: expense.item || "misc",
+      item: decamelize(expense.item) || "misc",
       on: formatDate(expense.on),
-      at: expense.at || "Unknown"
+      at: decamelize(expense.at) || "unknown"
     }
   }
 }
