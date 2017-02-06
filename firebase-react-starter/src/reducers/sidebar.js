@@ -2,7 +2,9 @@
 import { SHOW_SIDEBAR, HIDE_SIDEBAR } from '../constants/actionTypes.js'
 
 const initialState = {
-  show: false,
+  show: true,
+  title: "Expense Manager",
+  mainTitle: "",
   menuItems : [
     {
       text: "Home",
@@ -21,10 +23,13 @@ const initialState = {
 
 export const sideBarReducer = (state = initialState, action) => {
   let show
+  let mainTitle
   switch(action.type) {
     case SHOW_SIDEBAR:
       show = true
-      return { ...state, show }
+      mainTitle = action.text
+
+      return { ...state, show, mainTitle }
     case HIDE_SIDEBAR:
         show = false
         return { ...state, show }

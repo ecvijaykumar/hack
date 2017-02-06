@@ -1,6 +1,13 @@
 import React from 'react'
 import { reduxForm, Field } from 'redux-form'
-import { Paper, TextField, RaisedButton, DatePicker, AutoComplete} from 'material-ui'
+import {
+          Button,
+          Form,
+          FormField,
+          NumberInput,
+          TextInput,
+          DateTime
+       } from 'grommet'
 
 
 export const validate = values => {
@@ -13,112 +20,101 @@ export const validate = values => {
   return errors
 }
 
-const renderTextField = ({input, label, meta: { touched, error}, style, ...custom}) => (
-  <div style={style}>
-    <TextField hintText={label}
-      floatingLabelText={label}
-      errorText={touched && error}
-      {...input}
+/*
+const renderNumberField = ({name, label, meta: { touched, error},
+                          input: { value, onChange}, ...custom}) => (
+  <FormField error={touched && error} >
+    <NumberInput id={name}
+      name={label}
+      placeHolder={label}
+      onChange={onChange}
+      value={value}
+      {...custom}
+      max={10000}
+      min={0}
+    />
+  </FormField>
+)
+*/
+
+
+const renderTextField = ({name, label, meta: { touched, error},
+                          input: { value, onChange}, ...custom}) => (
+  <FormField error={touched && error} >
+    <TextInput id={name}
+      name={label}
+      placeHolder={label}
+      onDOMChange={onChange}
+      value={value}
       {...custom}
     />
-  </div>
+  </FormField>
 )
 
-const renderButton = ({input, label, meta: { touched, error}, style, ...custom} ) => (
-  <div style={style}>
-    <RaisedButton label={label} primary={true} type="submit"
+
+const renderComboField = ({name, label, meta: { touched, error},
+                          input: { value, onChange},
+                          suggestions, ...custom}) => (
+  <FormField error={touched && error} >
+    <TextInput id={name}
+      name={label}
+      placeHolder={label}
+      onDOMChange={onChange}
+      value={value}
+      suggestions={suggestions}
+      onSelect={(e) => onChange(e.suggestion)}
       {...custom}
     />
-  </div>
+  </FormField>
 )
 
-const renderComboField = (props) => {
-  const {
-    src,
-    label,
-    style,
-    input: { value, onChange }
-  } = props
-  if (src === undefined) return null
-  console.log(src)
-  return(
-    <div style={style}>
-    <AutoComplete
-      floatingLabelText={label}
-      searchText={value}
-      openOnFocus={true}
-      filter={AutoComplete.fuzzyFilter}
-      dataSource={src}
-      onUpdateInput={value => { console.log("AC ", value) ;
-        onChange(value)
-    }}
-      maxSearchResults={5}
+const renderButton = ({label, meta: { touched, error}, onClick }) => (
+  <FormField>
+    <Button accent={true}
+      fill={true}
+      label={label}
+      type="submit"
+      onClick={onClick}
+      primary={true}
     />
-  </div>
-  )
-}
+  </FormField>
+)
 
 const renderDate = props => {
-  let maxDate = new Date()
-  let minDate = new Date()
-  minDate.setFullYear(minDate.getFullYear() -1)
-  const { style, input: { onChange}} = props
-
-
+  const { name, input: { value, onChange} } = props
   return (
-    <div style={style}>
-    <DatePicker onChange={(unused, date) => onChange(date)}
-      floatingLabelText="Spent On"
-      defaultDate={maxDate}
-      minDate={minDate}
-      maxDate={maxDate}
-      autoOk={true}
-      container='inline'
-    />
-  </div>
+    <FormField>
+      <DateTime onChange={(e) => onChange(e)}
+        format="M/D/YYYY"
+        id={name}
+        name={name}
+        value={value}
+      />
+    </FormField>
+
   )
 }
 
 const ExpenseForm = props => {
   const { items, at, handleSubmit } = props
-
-  const style = {
-    formContainer: {
-      display: 'flex',
-      justifyContent: 'center'
-    },
-    form: {
-      minHeight: 100,
-      display: 'flex',
-      alignItems: 'center'
-    },
-    fieldStyle: {
-      padding: 20
-    }
-  }
-
     return (
-      <Paper style={style.formContainer}>
-        <form style={style.form} onSubmit={handleSubmit}>
+        <Form pad="small" compact={true} onSubmit={handleSubmit}>
           <Field name="amount" component={renderTextField}
-              style={style.fieldStyle}
               label="Spent Amount ($)"/>
           <Field name="item" component={renderComboField}
-              style={style.fieldStyle}
-              src={items}
+              suggestions={items}
               label="for item" />
           <Field name="at" component={renderComboField}
-              style={style.fieldStyle}
-              src={at} label="at"/>
-
+              suggestions={at}
+              label="at"/>
           <Field name="on" component={renderDate}
-              style={style.fieldStyle}
-              label="on date"/>
+              label="on"/>
+
           <Field name="submit" component={renderButton}
-            style={style.fieldStyle}
+            onClick={handleSubmit}
             label="Add"/>
-        </form>
-      </Paper>
+        </Form>
+
     )
 }
 

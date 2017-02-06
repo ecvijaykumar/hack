@@ -45,8 +45,9 @@ export const fetchExpenses = () => (
   }
 )
 
-export const showSideBar = () => ({
-    type: SHOW_SIDEBAR
+export const showSideBar = (text) => ({
+    type: SHOW_SIDEBAR,
+    text
 })
 
 export const hideSideBar = () => ({
@@ -60,7 +61,7 @@ export const loadPage = (url) =>{
 
 export const sideBarSelection = (index, menu) => {
   return (dispatch) => {
-    dispatch(hideSideBar())
+    dispatch(showSideBar(menu.text))
     dispatch(loadPage(menu.url))
   }
 }
