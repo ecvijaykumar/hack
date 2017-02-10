@@ -2,11 +2,10 @@ import React from 'react'
 import { reduxForm, Field } from 'redux-form'
 import {
           Button,
+          DateTime,
           Form,
           FormField,
-          NumberInput,
-          TextInput,
-          DateTime
+          TextInput
        } from 'grommet'
 
 
@@ -114,7 +113,6 @@ const ExpenseForm = props => {
             onClick={handleSubmit}
             label="Add"/>
         </Form>
-
     )
 }
 

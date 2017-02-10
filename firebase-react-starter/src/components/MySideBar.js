@@ -19,7 +19,8 @@ const MySideBar = ({
   if (!show) return null
   return (
     <Sidebar  fixed={true}
-              colorIndex='neutral-1'>
+      full={true}
+      colorIndex='neutral-1'>
       <Header justify="center">
         <Title a11yTitle="Welcome World"
           onClick={onClose}>

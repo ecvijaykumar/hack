@@ -1,28 +1,49 @@
 import React from 'react'
 import {Table, Column, Cell} from 'fixed-data-table';
 //import { camelCase} from '../lib/utils'
+import { Link } from 'react-router'
 
 import "../../node_modules/fixed-data-table/dist/fixed-data-table.css"
 
-const TextCell = ({rowIndex, data, col, ...props}) => {
-  console.log("TC", rowIndex, data, col)
-  return (
-    <Cell {...props}>
-      {data[rowIndex][col]}
-    </Cell>
-  )
-}
+import { Box, Anchor } from 'grommet'
+import  Edit from 'grommet/components/icons/base/Edit'
+import  Trash from 'grommet/components/icons/base/Trash'
 
-const ExpenseList = ({expenses}) => {
-  console.log(expenses.length)
+const TextCell = ({rowIndex, data, col, ...props}) => (
+  <Cell {...props}>
+    {data[rowIndex][col]}
+  </Cell>
+)
+
+const EditDeleteCell = ({rowIndex, data, onEdit, onDelete}) => (
+  <Box direction='row'
+    align='center'
+    justify='center'
+    pad='small'>
+    <Anchor
+      href={`/editExpense/${data[rowIndex].key}`}
+      icon={<Edit size="small"/>}
+      onClick={()=> onEdit(data[rowIndex].key)}
+    />
+    <Anchor
+
+      icon={<Trash size="small"/>}
+      onClick={()=> onDelete(data[rowIndex].key)}
+    />
+
+  </Box>
+  )
+const ExpenseList = ({expenses, count, onEdit, onDelete}) => {
   return (
     <Table
       rowHeight={50}
       headerHeight={50}
-      rowsCount={expenses.length}
+      rowsCount={count}
       width={1000}
       height={500}
       >
+
+
      <Column
        header={<Cell>Spent</Cell>}
        width={100}
@@ -51,9 +72,17 @@ const ExpenseList = ({expenses}) => {
           cell={<TextCell data={expenses} col="on" />}
         />
 
+        <Column
+          header={<Cell>Edit</Cell>}
+          width={150}
+          fixed={true}
+          cell={<EditDeleteCell data={expenses}
+            onEdit={onEdit}
+            onDelete={onDelete} />}
+        />
+
     </Table>
   )
 }
 
 export default ExpenseList
-////

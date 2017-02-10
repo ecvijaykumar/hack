@@ -37,7 +37,9 @@ const Home = ({ nav: { title, menuItems, show, mainTitle},
 
   return (
     <App centered={false}>
-      <Split>
+      <Split
+        fixed={false}
+        flex='right' >
           <MySideBar show={show}
              title={title}
              items={menuItems}
@@ -66,7 +68,11 @@ const Home = ({ nav: { title, menuItems, show, mainTitle},
                 />
               </Box>
             </Header>
+            <Box
+              alignSelf='center'
+              >
               {children}
+            </Box>
           </Article>
       </Split>
     </App>

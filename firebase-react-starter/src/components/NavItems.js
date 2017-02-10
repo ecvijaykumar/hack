@@ -9,8 +9,8 @@ const NavItems = ({items, onItemClick, ...custom}) => {
   let links = items.map((page, index) => {
     let menuItemClick = onItemClick.bind(this, index)
     return (
-      <Anchor key={index}
-      
+      <Anchor
+        key={index}
         onClick={menuItemClick}>
         {page.text}
       </Anchor>

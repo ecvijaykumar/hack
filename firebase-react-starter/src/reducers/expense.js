@@ -1,21 +1,69 @@
-import { NEW_EXPENSE} from '../constants/actionTypes.js'
+import {
+  CLOSE_STATUS,
+  FETCH_EXPESNES,
+  EDIT_EXPENSE,
+  NEW_EXPENSE,
+  DELETE_EXPENSE
+} from '../constants/actionTypes.js'
+import  { Map} from 'immutable'
+import uuid from 'uuid'
+
+let expenseMap = Map()
+const uuidv4 = uuid.v4
 
 
-export const newExpense = (state = [], action) => {
-  switch(action.type) {
-    case NEW_EXPENSE:
-      return [ ...state, action.payload]
-    default:
-      return state
-  }
-
+const initialState = {
+  added: false,
+  fetched: false,
+  count: 0,
+  expenses: [],
+  total: 0
 }
 
-export const totalExpenses = (state = 0, action) => {
+const addExpense = (data) => {
+  let _key = uuidv4()
+  data.key = _key
+  expenseMap = expenseMap.set(_key, data)
+  return expenseMap.toArray()
+}
 
-  switch (action.type) {
+const deleteExpense = (key) => {
+  expenseMap = expenseMap.delete(key)
+  return expenseMap.toArray()
+}
+
+const editExpense = (key) => {
+  return expenseMap.get(key)
+}
+
+export const expenseReducer = (state = initialState, action) => {
+  switch(action.type) {
     case NEW_EXPENSE:
-      return state + parseInt(action.payload.amount,  10)
+      return {
+        ...state,
+        added: true,
+        expenses: addExpense(action.payload),
+        count: expenseMap.count(),
+        total: state.total + parseInt(action.payload.amount, 10)
+      }
+    case FETCH_EXPESNES:
+      return {
+        ...state,
+        added: false,
+        fetching: false,
+      }
+    case CLOSE_STATUS:
+      return {
+        ...state,
+        added: false
+      }
+    case DELETE_EXPENSE:
+      return {
+        ...state,
+        expenses: deleteExpense(action.payload.key),
+        count: expenseMap.count(),
+      }
+
     default:
       return state
   }

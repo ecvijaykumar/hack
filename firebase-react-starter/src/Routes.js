@@ -10,7 +10,7 @@ export let routes = [
     childRoutes: [
       { path: 'todo', component: TodoApp },
       { path: 'chat', component: ChatRoom },
-
+      { path: "/editExpense/:key",  component: ExpenseEntry},
       { path: 'expenses', component: ExpenseEntry },
       { path: 'showExpenses', component: ExpenseApp }
     ]

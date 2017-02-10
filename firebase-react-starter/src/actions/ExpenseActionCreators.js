@@ -1,5 +1,9 @@
 
-import { NEW_EXPENSE,
+import {
+  CLOSE_STATUS,
+  NEW_EXPENSE,
+  EDIT_EXPENSE,
+  DELETE_EXPENSE,
   FETCH_EXPENSES,
   SHOW_SIDEBAR,
   HIDE_SIDEBAR } from '../constants/actionTypes.js'
@@ -38,6 +42,28 @@ export const newExpense = (expense) => {
     dispatch(reset('expenseForm'))
   }
 }
+
+export const editExpense = (key) => (
+  {
+    type: EDIT_EXPENSE,
+    payload: {
+      key
+    }
+  }
+)
+export const deleteExpense = (key) => {
+  return {
+    type: DELETE_EXPENSE,
+    payload: {
+      key
+    }
+  }
+}
+export const closeStatus = () => (
+  {
+    type: CLOSE_STATUS
+  }
+)
 
 export const fetchExpenses = () => (
   {
