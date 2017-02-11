@@ -1,8 +1,6 @@
 import React from 'react'
 import {Table, Column, Cell} from 'fixed-data-table';
 //import { camelCase} from '../lib/utils'
-import { Link } from 'react-router'
-
 import "../../node_modules/fixed-data-table/dist/fixed-data-table.css"
 
 import { Box, Anchor } from 'grommet'
@@ -21,9 +19,8 @@ const EditDeleteCell = ({rowIndex, data, onEdit, onDelete}) => (
     justify='center'
     pad='small'>
     <Anchor
-      href={`/editExpense/${data[rowIndex].key}`}
       icon={<Edit size="small"/>}
-      onClick={()=> onEdit(data[rowIndex].key)}
+      onClick={()=> onEdit(`/editExpense/${data[rowIndex].key}`)}
     />
     <Anchor
 

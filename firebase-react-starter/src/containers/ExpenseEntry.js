@@ -26,8 +26,8 @@ const ExpenseEntry = props => (
       onClose={props.closeStatus} />
       <ExpenseForm onSubmit={props.addExpense}
           added={props.added}
-          items={props.expenseFields.items.toArray()}
-          at={props.expenseFields.at.toArray()}/>
+          items={props.expenseFields.items}
+          at={props.expenseFields.at}/>
 
     </Section>
 

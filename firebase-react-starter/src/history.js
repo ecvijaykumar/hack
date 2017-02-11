@@ -9,7 +9,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 
 history.listen(location => {
-      console.log("Location Listener", location)
+    //  console.log("Location Listener", location)
   }
 )
 

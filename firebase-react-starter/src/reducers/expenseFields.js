@@ -1,39 +1,39 @@
 import { NEW_EXPENSE} from '../constants/actionTypes.js'
 import  { Set} from 'immutable'
 
-const itemSet = Set()
-const atSet = Set()
+let itemSet = Set()
+let atSet = Set()
 
-const expenseItems = (state, action) => {
+const expenseItems = (state = [], action) => {
   switch(action.type) {
     case NEW_EXPENSE:
-        return state.add(action.payload.item)
+        itemSet = itemSet.add(action.payload.item)
+        state = itemSet.toArray()
+        return state
     default:
       return state
   }
 }
 
-const expenseAt = (state , action) => {
+const expenseAt = (state = [], action) => {
   switch(action.type) {
     case NEW_EXPENSE:
-      return state.add(action.payload.at)
+      atSet = atSet.add(action.payload.at)
+      state = atSet.toArray()
+      return state
     default:
       return state
   }
 }
 
-const initialState = {
-  items: itemSet,
-  at: atSet
-}
-const expenseFields = (state = initialState, action) => {
+const expenseFields = (state = {}, action) => {
   switch(action.type) {
     case NEW_EXPENSE:
-        state = {
+        return {
+          ...state,
           at: expenseAt(state.at, action),
           items: expenseItems(state.items, action)
         }
-        return state
       default:
         return state
   }

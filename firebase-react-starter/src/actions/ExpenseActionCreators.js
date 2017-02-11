@@ -2,9 +2,10 @@
 import {
   CLOSE_STATUS,
   NEW_EXPENSE,
-  EDIT_EXPENSE,
   DELETE_EXPENSE,
   FETCH_EXPENSES,
+  UPDATE_EXPENSE,
+  FETCH_EXPENSE_FOR_KEY,
   SHOW_SIDEBAR,
   HIDE_SIDEBAR } from '../constants/actionTypes.js'
 
@@ -23,6 +24,10 @@ const formatDate = ds => {
   return d.toLocaleDateString('en-US')
 }
 
+export const loadPage = (url) =>{
+  const x = push(url)
+  return x
+}
 
 const saveExpense = (expense) => {
   return {
@@ -36,6 +41,26 @@ const saveExpense = (expense) => {
   }
 }
 
+export const updateExpense = (expense) => {
+  console.log(expense)
+  return {
+    type: UPDATE_EXPENSE,
+    payload: {
+      key: expense.key,
+      amount: expense.amount || 0,
+      item: decamelize(expense.item) || "misc",
+      on: formatDate(expense.on),
+      at: decamelize(expense.at) || "unknown"
+    }
+  }
+}
+
+export const cancelExpense = () => {
+  return (dispatch) => {
+    dispatch(loadPage("/showExpenses"))
+  }
+}
+
 export const newExpense = (expense) => {
   return (dispatch) => {
     dispatch(saveExpense(expense))
@@ -43,17 +68,23 @@ export const newExpense = (expense) => {
   }
 }
 
-export const editExpense = (key) => (
-  {
-    type: EDIT_EXPENSE,
+export const editExpense = (url) => {
+  return (dispatch) => {
+    dispatch(loadPage(url))
+  }
+}
+export const deleteExpense = (key) => {
+  return {
+    type: DELETE_EXPENSE,
     payload: {
       key
     }
   }
-)
-export const deleteExpense = (key) => {
+}
+
+export const fetchExpense = (key) => {
   return {
-    type: DELETE_EXPENSE,
+    type: FETCH_EXPENSE_FOR_KEY,
     payload: {
       key
     }
@@ -80,10 +111,6 @@ export const hideSideBar = () => ({
   type: HIDE_SIDEBAR
 })
 
-export const loadPage = (url) =>{
-  const x = push(url)
-  return x
-}
 
 export const sideBarSelection = (index, menu) => {
   return (dispatch) => {
