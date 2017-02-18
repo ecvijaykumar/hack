@@ -17,6 +17,8 @@ const initialState = {
   added: false,
   fetched: false,
   keyFetched: false,
+  updateSuccess: false,
+  updateFailure: false,
   count: 0,
   expenses: [],
   expenseFetched: {},
@@ -44,6 +46,10 @@ const getExpense = (key) => {
   return expenseMap.get(key)
 }
 
+const getExpenses = () => {
+  return expenseMap.toArray()
+}
+
 
 export const expenseReducer = (state = initialState, action) => {
   switch(action.type) {
@@ -58,18 +64,25 @@ export const expenseReducer = (state = initialState, action) => {
     case UPDATE_EXPENSE:
       return {
           ...state,
+          updateSuccess: true,
           expenses: updateExpense(action.payload)
       }
     case FETCH_EXPESNES:
       return {
         ...state,
-        added: false,
+        expenses: getExpenses(),
         fetching: false,
+        added: false,
+        fetched: false,
+        keyFetched: false,
+        updateSuccess: false,
+        updateFailure: false,
       }
     case FETCH_EXPENSE_FOR_KEY:
       return {
           ...state,
           keyFetched: true,
+          updateSuccess: false,
           expenseFetched : getExpense(action.payload.key)
       }
 

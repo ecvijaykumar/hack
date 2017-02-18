@@ -16,18 +16,25 @@ class ExpenseEdit extends React.Component {
     if (this.props.id == null) return
     this.props.fetchExpense(this.props.id)
   }
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess) {
+      nextProps.cancelExpense()
+    } else {
+      this.props = nextProps
+    }
 
+
+  }
   render() {
-    const {
+      const {
       updateExpense,
       cancelExpense,
       expenseFields,
-      fetched,
-      initialValues,
+      initialValues
       } = this.props
 
-    if (!fetched) return null
-
+    console.log(expenseFields.items, expenseFields.at)
+    
     return (
       <Section>
         <ExpenseEditForm onSubmit={updateExpense}
@@ -45,6 +52,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
       expenseFields: state.expenseFields,
       fetched: state.expenses.keyFetched,
+      updateSuccess : state.expenses.updateSuccess,
       initialValues: state.expenses.expenseFetched,
       id: ownProps.params.key
     }
@@ -54,7 +62,7 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     cancelExpense,
     fetchExpense,
-    updateExpense,
+    updateExpense
   }, dispatch)
 )
 

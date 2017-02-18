@@ -20,8 +20,20 @@ const formatDate = ds => {
   } else {
     d = new Date()
   }
-
   return d.toLocaleDateString('en-US')
+}
+
+const expensePayload = (expense) => {
+  expense.item = expense.item || "misc"
+  expense.at = expense.at || "unknown"
+
+  return {
+    key: expense.key,
+    amount: expense.amount || 0,
+    item: decamelize(expense.item),
+    on: formatDate(expense.on),
+    at: decamelize(expense.at)
+  }
 }
 
 export const loadPage = (url) =>{
@@ -30,33 +42,33 @@ export const loadPage = (url) =>{
 }
 
 const saveExpense = (expense) => {
+  expense.key = null
   return {
     type: NEW_EXPENSE,
-    payload: {
-      amount: expense.amount || 0,
-      item: decamelize(expense.item) || "misc",
-      on: formatDate(expense.on),
-      at: decamelize(expense.at) || "unknown"
-    }
+    payload: expensePayload(expense)
   }
 }
 
 export const updateExpense = (expense) => {
-  console.log(expense)
   return {
     type: UPDATE_EXPENSE,
+    payload: expensePayload(expense)
+  }
+}
+
+
+export const fetchExpense = (key) => {
+  return {
+    type: FETCH_EXPENSE_FOR_KEY,
     payload: {
-      key: expense.key,
-      amount: expense.amount || 0,
-      item: decamelize(expense.item) || "misc",
-      on: formatDate(expense.on),
-      at: decamelize(expense.at) || "unknown"
+      key
     }
   }
 }
 
 export const cancelExpense = () => {
   return (dispatch) => {
+    dispatch(fetchExpense)
     dispatch(loadPage("/showExpenses"))
   }
 }
@@ -82,14 +94,7 @@ export const deleteExpense = (key) => {
   }
 }
 
-export const fetchExpense = (key) => {
-  return {
-    type: FETCH_EXPENSE_FOR_KEY,
-    payload: {
-      key
-    }
-  }
-}
+
 export const closeStatus = () => (
   {
     type: CLOSE_STATUS

@@ -23,7 +23,6 @@ const EditDeleteCell = ({rowIndex, data, onEdit, onDelete}) => (
       onClick={()=> onEdit(`/editExpense/${data[rowIndex].key}`)}
     />
     <Anchor
-
       icon={<Trash size="small"/>}
       onClick={()=> onDelete(data[rowIndex].key)}
     />
