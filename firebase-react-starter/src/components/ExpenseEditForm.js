@@ -13,9 +13,7 @@ import { expenseFieldsValidate } from '../lib/expense'
 
 
 let ExpenseEditForm = props => {
-  console.log(props)
   const { items, at, handleSubmit, onCancel } = props
-
     return (
         <Form pad="small" compact={true} onSubmit={handleSubmit} >
           <Field name="amount" component={renderTextField}

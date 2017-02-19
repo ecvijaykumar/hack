@@ -20,21 +20,21 @@ const EditDeleteCell = ({rowIndex, data, onEdit, onDelete}) => (
     pad='small'>
     <Anchor
       icon={<Edit size="small"/>}
-      onClick={()=> onEdit(`/editExpense/${data[rowIndex].key}`)}
+      onClick={()=> onEdit(`/editExpense/${data[rowIndex]['.key']}`)}
     />
     <Anchor
       icon={<Trash size="small"/>}
-      onClick={()=> onDelete(data[rowIndex].key)}
+      onClick={()=> onDelete(data[rowIndex]['.key'])}
     />
 
   </Box>
   )
-const ExpenseList = ({expenses, count, onEdit, onDelete}) => {
+const ExpenseList = ({expenses, onEdit, onDelete}) => {
   return (
     <Table
       rowHeight={50}
       headerHeight={50}
-      rowsCount={count}
+      rowsCount={expenses.length}
       width={1000}
       height={500}
       >

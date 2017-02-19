@@ -40,14 +40,7 @@ const expenseFields = (state = {}, action) => {
         at: expenseAt(state.at, action),
         items: expenseItems(state.items, action)
       }
-/*
-    case FETCH_EXPENSE_FOR_KEY:
-      console.log("FK", itemSet.toArray())
-      return {
-        at: atSet.toArray(),
-        items: itemSet.toArray()
-      }
-      */
+
       default:
         return state
   }

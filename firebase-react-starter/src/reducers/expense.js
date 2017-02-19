@@ -1,55 +1,36 @@
 import {
   CLOSE_STATUS,
-  FETCH_EXPESNES,
+  FETCH_EXPENSES,
+  RECEIVE_EXPENSES,
   NEW_EXPENSE,
   DELETE_EXPENSE,
   UPDATE_EXPENSE,
   FETCH_EXPENSE_FOR_KEY
 } from '../constants/actionTypes.js'
-import  { Map} from 'immutable'
-import uuid from 'uuid'
-
-let expenseMap = Map()
-const uuidv4 = uuid.v4
 
 
 const initialState = {
-  added: false,
-  fetched: false,
-  keyFetched: false,
-  updateSuccess: false,
-  updateFailure: false,
-  count: 0,
-  expenses: [],
-  expenseFetched: {},
-  total: 0
+  items: []
+}
+const deleteExpense = (items, key) => (
+  items.filter((item) => item['.key'] !== key)
+)
+
+const getExpense = (items, key) => {
+  let index = items.findIndex((item) => item['.key'] === key)
+  if (index === -1) return null
+  return items[index]
 }
 
-const addExpense = (data) => {
-  let _key = uuidv4()
-  data.key = _key
-  expenseMap = expenseMap.set(_key, data)
-  return expenseMap.toArray()
-}
+const updateExpense = (items, item) => {
+  console.log(items)
+  let index = items.findIndex(e => e['.key'] === item['.key'])
+  if (index === -1) return items
+  console.log("Updating expsense", items[index], item)
+  items[index] = item
 
-const updateExpense = (data) => {
-  expenseMap = expenseMap.set(data.key, data)
-  return expenseMap.toArray()
+  return items
 }
-
-const deleteExpense = (key) => {
-  expenseMap = expenseMap.delete(key)
-  return expenseMap.toArray()
-}
-
-const getExpense = (key) => {
-  return expenseMap.get(key)
-}
-
-const getExpenses = () => {
-  return expenseMap.toArray()
-}
-
 
 export const expenseReducer = (state = initialState, action) => {
   switch(action.type) {
@@ -57,33 +38,30 @@ export const expenseReducer = (state = initialState, action) => {
       return {
         ...state,
         added: true,
-        expenses: addExpense(action.payload),
-        count: expenseMap.count(),
-        total: state.total + parseInt(action.payload.amount, 10)
+        items: [ ...state.items, action.payload ]
       }
     case UPDATE_EXPENSE:
       return {
           ...state,
           updateSuccess: true,
-          expenses: updateExpense(action.payload)
+          items: updateExpense(state.items, action.payload)
       }
-    case FETCH_EXPESNES:
+    case FETCH_EXPENSES:
       return {
         ...state,
-        expenses: getExpenses(),
-        fetching: false,
-        added: false,
-        fetched: false,
-        keyFetched: false,
-        updateSuccess: false,
-        updateFailure: false,
+        fetching: true
       }
+    case RECEIVE_EXPENSES:
+      return {
+        ...state,
+        fetching: false,
+        items: action.payload.items
+      }
+
     case FETCH_EXPENSE_FOR_KEY:
       return {
           ...state,
-          keyFetched: true,
-          updateSuccess: false,
-          expenseFetched : getExpense(action.payload.key)
+          expense: getExpense(state.items, action.payload.key)
       }
 
     case CLOSE_STATUS:
@@ -94,8 +72,7 @@ export const expenseReducer = (state = initialState, action) => {
     case DELETE_EXPENSE:
       return {
         ...state,
-        expenses: deleteExpense(action.payload.key),
-        count: expenseMap.count(),
+        items: deleteExpense(state.items, action.payload.key),
       }
 
     default:

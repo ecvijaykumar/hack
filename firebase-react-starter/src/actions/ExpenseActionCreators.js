@@ -4,6 +4,7 @@ import {
   NEW_EXPENSE,
   DELETE_EXPENSE,
   FETCH_EXPENSES,
+  RECEIVE_EXPENSES,
   UPDATE_EXPENSE,
   FETCH_EXPENSE_FOR_KEY,
   SHOW_SIDEBAR,
@@ -12,6 +13,7 @@ import {
 import { push } from 'react-router-redux'
 import {reset} from 'redux-form'
 import { decamelize} from '../lib/utils'
+import * as firebase from 'firebase'
 
 const formatDate = ds => {
   let d;
@@ -28,7 +30,6 @@ const expensePayload = (expense) => {
   expense.at = expense.at || "unknown"
 
   return {
-    key: expense.key,
     amount: expense.amount || 0,
     item: decamelize(expense.item),
     on: formatDate(expense.on),
@@ -41,22 +42,38 @@ export const loadPage = (url) =>{
   return x
 }
 
-const saveExpense = (expense) => {
-  expense.key = null
-  return {
-    type: NEW_EXPENSE,
-    payload: expensePayload(expense)
-  }
+const receiveExpenses = (items, total) => ({
+    type: RECEIVE_EXPENSES,
+    payload: {
+      items
+    }
+})
+
+const fetchExpensesFromDB = (dispatch) => {
+  const fbRef = firebase.database().ref('/expenses')
+  fbRef.limitToLast(25).on('value', function(dataSnapshot) {
+    var items = [];
+    let total = 0
+    dataSnapshot.forEach(function(childSnapshot) {
+      var item = childSnapshot.val();
+      item['.key'] = childSnapshot.key;
+      total += parseInt(item.amount, 10)
+      items.push(item);
+    });
+    dispatch(receiveExpenses(items, total))
+  })
 }
 
-export const updateExpense = (expense) => {
-  return {
-    type: UPDATE_EXPENSE,
-    payload: expensePayload(expense)
+const fetchingExpenses = () => ({
+  type: FETCH_EXPENSES
+})
+
+export const fetchExpenses = () => {
+  return (dispatch) => {
+    dispatch(fetchingExpenses())
+    fetchExpensesFromDB(dispatch)
   }
 }
-
-
 export const fetchExpense = (key) => {
   return {
     type: FETCH_EXPENSE_FOR_KEY,
@@ -68,15 +85,48 @@ export const fetchExpense = (key) => {
 
 export const cancelExpense = () => {
   return (dispatch) => {
-    dispatch(fetchExpense)
     dispatch(loadPage("/showExpenses"))
   }
 }
 
-export const newExpense = (expense) => {
+const saveLocalExpense = (expense) => ({
+    type: NEW_EXPENSE,
+    payload: expensePayload(expense)
+})
+
+const updateLocalExpense = (expense) => {
+  console.log("udpate local ex")
+  return {
+    type: UPDATE_EXPENSE,
+    payload: expense
+    }
+}
+
+const updateDBExpense = (expense) => {
+  const fbRef = firebase.database().ref('/expenses')
+  let updates = {}
+  updates[expense['.key']] = expensePayload(expense)
+  fbRef.update(updates)
+}
+
+const saveDBExpense = (key, expense) => {
+  const fbRef = firebase.database().ref('/expenses')
+  return fbRef.push(expense).key
+}
+
+export const updateExpense = (expense) => {
+  updateDBExpense(expense)
   return (dispatch) => {
-    dispatch(saveExpense(expense))
-    dispatch(reset('expenseForm'))
+    dispatch(updateLocalExpense(expense))
+  }
+}
+export const newExpense = (expense) => {
+  let _expense = expensePayload(expense)
+  _expense['.key'] = saveDBExpense(_expense)
+
+  return (dispatch) => {
+      dispatch(saveLocalExpense(_expense))
+      dispatch(reset('expenseForm'))
   }
 }
 
@@ -86,6 +136,9 @@ export const editExpense = (url) => {
   }
 }
 export const deleteExpense = (key) => {
+  console.log("Deleting expense", key)
+  const fbRef = firebase.database().ref('/expenses')
+  fbRef.child(key).remove()
   return {
     type: DELETE_EXPENSE,
     payload: {
@@ -94,18 +147,9 @@ export const deleteExpense = (key) => {
   }
 }
 
-
-export const closeStatus = () => (
-  {
+export const closeStatus = () => ({
     type: CLOSE_STATUS
-  }
-)
-
-export const fetchExpenses = () => (
-  {
-    type: FETCH_EXPENSES
-  }
-)
+})
 
 export const showSideBar = (text) => ({
     type: SHOW_SIDEBAR,
@@ -115,7 +159,6 @@ export const showSideBar = (text) => ({
 export const hideSideBar = () => ({
   type: HIDE_SIDEBAR
 })
-
 
 export const sideBarSelection = (index, menu) => {
   return (dispatch) => {

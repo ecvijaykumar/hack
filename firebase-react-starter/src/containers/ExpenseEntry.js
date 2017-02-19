@@ -23,7 +23,7 @@ const ShowStatus = ({added, onClose}) => {
 const ExpenseEntry = props => (
     <Section>
       <ShowStatus added={props.added}
-      onClose={props.closeStatus} />
+        onClose={props.closeStatus} />
       <ExpenseForm onSubmit={props.addExpense}
           added={props.added}
           items={props.expenseFields.items}

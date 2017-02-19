@@ -48,7 +48,6 @@ export const renderComboField = ({
   suggestions,
   ...custom}) => {
 
-    console.log("RCF", label, value, suggestions)
   return (
   <FormField error={touched && error} >
 

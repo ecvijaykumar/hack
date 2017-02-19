@@ -27,14 +27,12 @@ class ExpenseEdit extends React.Component {
   }
   render() {
       const {
-      updateExpense,
-      cancelExpense,
-      expenseFields,
-      initialValues
+        updateExpense,
+        cancelExpense,
+        expenseFields,
+        initialValues
       } = this.props
 
-    console.log(expenseFields.items, expenseFields.at)
-    
     return (
       <Section>
         <ExpenseEditForm onSubmit={updateExpense}
@@ -51,9 +49,8 @@ class ExpenseEdit extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
       expenseFields: state.expenseFields,
-      fetched: state.expenses.keyFetched,
       updateSuccess : state.expenses.updateSuccess,
-      initialValues: state.expenses.expenseFetched,
+      initialValues: state.expenses.expense,
       id: ownProps.params.key
     }
 }

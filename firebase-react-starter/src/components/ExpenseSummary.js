@@ -3,9 +3,8 @@ import { AnnotatedMeter } from 'grommet-addons'
 //import { FormattedNumber } from 'react-intl'
 import { expenseGroupByPeriod } from '../lib/expense'
 
-//      {renderExpenseDetails(expenses)}
-const ExpenseSummary = ({expenses,  count, total}) => {
-  if (count === 0) return null
+const ExpenseSummary = (expenses) => {
+  
   const r = expenseGroupByPeriod(expenses)
   const series = [
     { "label": "Today", "value": r.today, "colorIndex": "graph-1"},

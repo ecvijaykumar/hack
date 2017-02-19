@@ -3,10 +3,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { deleteExpense, editExpense } from '../actions/ExpenseActionCreators'
+import { deleteExpense,
+  editExpense,
+  fetchExpenses } from '../actions/ExpenseActionCreators'
 import ExpenseList from '../components/ExpenseList'
 import ExpenseSummary from '../components/ExpenseSummary'
 
+import Spinning from 'grommet/components/icons/Spinning';
 
 import { Article} from 'grommet'
 
@@ -21,18 +24,39 @@ const renderExpenseList = ({expenses, count, onEdit, onDelete}) => {
   )
 }
 
-const ExpenseApp = props => (
-  <Article>
-        {ExpenseSummary(props)}
-        {renderExpenseList(props)}
-  </Article>
-)
+class ExpenseApp extends React.Component {
+  componentWillMount() {
+    this.props.fetchExpenses()
+  }
+
+  renderExpenseFetching() {
+    return (
+        <Spinning size="xlarge" />
+
+    )
+  }
+
+  render() {
+    const { fetching, expenses } = this.props
+    if (fetching) {
+      return this.renderExpenseFetching()
+    }
+    if (expenses.length === 0) return null
+    
+    return (
+      <Article>
+        {ExpenseSummary(expenses)}
+        {renderExpenseList(this.props)}
+      </Article>
+
+    )
+  }
+}
 
 const mapStateToProps = (state) => (
   {
-    expenses: state.expenses.expenses,
-    count: state.expenses.count,
-    total: state.expenses.total
+    fetching: state.expenses.fetching,
+    expenses: state.expenses.items
   }
 )
 
@@ -40,6 +64,7 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     onDelete: deleteExpense,
     onEdit: editExpense,
+    fetchExpenses,
   }, dispatch)
 )
 
