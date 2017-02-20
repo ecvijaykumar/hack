@@ -4,6 +4,7 @@ import {
   NEW_EXPENSE,
   DELETE_EXPENSE,
   FETCH_EXPENSES,
+  FETCH_EXPNSES_DEBUG,
   RECEIVE_EXPENSES,
   UPDATE_EXPENSE,
   FETCH_EXPENSE_FOR_KEY,
@@ -14,6 +15,10 @@ import { push } from 'react-router-redux'
 import {reset} from 'redux-form'
 import { decamelize} from '../lib/utils'
 import * as firebase from 'firebase'
+import uuid from 'uuid'
+
+const useFB = false
+const uuidv4 = uuid.v4
 
 const formatDate = ds => {
   let d;
@@ -71,7 +76,13 @@ const fetchingExpenses = () => ({
 export const fetchExpenses = () => {
   return (dispatch) => {
     dispatch(fetchingExpenses())
-    fetchExpensesFromDB(dispatch)
+    if (useFB) {
+        fetchExpensesFromDB(dispatch)
+    } else {
+      dispatch({
+        type: FETCH_EXPNSES_DEBUG
+      })
+    }
   }
 }
 export const fetchExpense = (key) => {
@@ -91,7 +102,7 @@ export const cancelExpense = () => {
 
 const saveLocalExpense = (expense) => ({
     type: NEW_EXPENSE,
-    payload: expensePayload(expense)
+    payload: expense
 })
 
 const updateLocalExpense = (expense) => {
@@ -122,7 +133,12 @@ export const updateExpense = (expense) => {
 }
 export const newExpense = (expense) => {
   let _expense = expensePayload(expense)
-  _expense['.key'] = saveDBExpense(_expense)
+  if (useFB) {
+    _expense['.key'] = saveDBExpense(_expense)
+  } else {
+    _expense['.key'] = uuidv4()
+    console.log(_expense)
+  }
 
   return (dispatch) => {
       dispatch(saveLocalExpense(_expense))
@@ -136,9 +152,11 @@ export const editExpense = (url) => {
   }
 }
 export const deleteExpense = (key) => {
-  console.log("Deleting expense", key)
-  const fbRef = firebase.database().ref('/expenses')
-  fbRef.child(key).remove()
+  if (useFB) {
+    const fbRef = firebase.database().ref('/expenses')
+    fbRef.child(key).remove()
+  }
+
   return {
     type: DELETE_EXPENSE,
     payload: {

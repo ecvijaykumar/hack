@@ -1,6 +1,7 @@
 import {
   CLOSE_STATUS,
   FETCH_EXPENSES,
+  FETCH_EXPNSES_DEBUG,
   RECEIVE_EXPENSES,
   NEW_EXPENSE,
   DELETE_EXPENSE,
@@ -51,6 +52,12 @@ export const expenseReducer = (state = initialState, action) => {
         ...state,
         fetching: true
       }
+
+    case FETCH_EXPNSES_DEBUG:
+    return {
+      ...state,
+      fetching: false
+    }
     case RECEIVE_EXPENSES:
       return {
         ...state,

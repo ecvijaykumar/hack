@@ -69,7 +69,7 @@ export const renderButton = ({
   meta: { touched, error},
   onClick }) => (
   <FormField>
-    <Button accent={true}
+    <Button accent={false}
       fill={true}
       label={label}
       type={type}
