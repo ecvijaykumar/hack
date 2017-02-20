@@ -109,7 +109,7 @@ const updateDBExpense = (expense) => {
   fbRef.update(updates)
 }
 
-const saveDBExpense = (key, expense) => {
+const saveDBExpense = (expense) => {
   const fbRef = firebase.database().ref('/expenses')
   return fbRef.push(expense).key
 }
