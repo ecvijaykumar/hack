@@ -17,7 +17,9 @@ import { decamelize} from '../lib/utils'
 import * as firebase from 'firebase'
 import uuid from 'uuid'
 
-const useFB = false
+const useFB = process.env.NODE_ENV || 'development'
+
+console.log(process.env.NODE_ENV)
 const uuidv4 = uuid.v4
 
 const formatDate = ds => {
@@ -49,9 +51,7 @@ export const loadPage = (url) =>{
 
 const receiveExpenses = (items, total) => ({
     type: RECEIVE_EXPENSES,
-    payload: {
-      items
-    }
+    payload: items
 })
 
 const fetchExpensesFromDB = (dispatch) => {
@@ -85,18 +85,33 @@ export const fetchExpenses = () => {
     }
   }
 }
-export const fetchExpense = (key) => {
-  return {
+
+export const fetchExpense = key => ({
     type: FETCH_EXPENSE_FOR_KEY,
-    payload: {
-      key
-    }
-  }
+    payload: { key }
+})
+
+const updateLocalExpense = expense => ({
+    type: UPDATE_EXPENSE,
+    payload: expense
+})
+
+const updateDBExpense = (expense) => {
+  const fbRef = firebase.database().ref('/expenses')
+  let updates = {}
+  updates[expense['.key']] = expense
+  fbRef.update(updates)
 }
 
-export const cancelExpense = () => {
+export const updateExpense = (_expense) => {
+  let key = _expense.eform['.key']
+  let expense = expensePayload(_expense.eform)
+  expense['.key'] = key
+  if (useFB) {
+    updateDBExpense(expense)
+  }
   return (dispatch) => {
-    dispatch(loadPage("/showExpenses"))
+    dispatch(updateLocalExpense(expense))
   }
 }
 
@@ -105,34 +120,12 @@ const saveLocalExpense = (expense) => ({
     payload: expense
 })
 
-const updateLocalExpense = (expense) => {
-  console.log("udpate local ex")
-  return {
-    type: UPDATE_EXPENSE,
-    payload: expense
-    }
-}
-
-const updateDBExpense = (expense) => {
-  const fbRef = firebase.database().ref('/expenses')
-  let updates = {}
-  updates[expense['.key']] = expensePayload(expense)
-  fbRef.update(updates)
-}
-
 const saveDBExpense = (expense) => {
   const fbRef = firebase.database().ref('/expenses')
   return fbRef.push(expense).key
 }
-
-export const updateExpense = (expense) => {
-  updateDBExpense(expense)
-  return (dispatch) => {
-    dispatch(updateLocalExpense(expense))
-  }
-}
 export const newExpense = (expense) => {
-  let _expense = expensePayload(expense)
+  let _expense = expensePayload(expense.eform)
   if (useFB) {
     _expense['.key'] = saveDBExpense(_expense)
   } else {
@@ -146,11 +139,6 @@ export const newExpense = (expense) => {
   }
 }
 
-export const editExpense = (url) => {
-  return (dispatch) => {
-    dispatch(loadPage(url))
-  }
-}
 export const deleteExpense = (key) => {
   if (useFB) {
     const fbRef = firebase.database().ref('/expenses')
@@ -159,9 +147,7 @@ export const deleteExpense = (key) => {
 
   return {
     type: DELETE_EXPENSE,
-    payload: {
-      key
-    }
+    payload: { key}
   }
 }
 
@@ -182,5 +168,11 @@ export const sideBarSelection = (index, menu) => {
   return (dispatch) => {
     dispatch(showSideBar(menu.text))
     dispatch(loadPage(menu.url))
+  }
+}
+
+export const showExpenses = () => {
+  return (dispatch) => {
+    dispatch(loadPage("/showExpenses"))
   }
 }

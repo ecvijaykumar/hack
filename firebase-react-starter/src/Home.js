@@ -8,6 +8,7 @@ import { App,
          Article,
          Box,
          Header,
+         Section,
          Search,
          Split,
          Title
@@ -38,8 +39,8 @@ const Home = ({ nav: { title, menuItems, show, mainTitle},
   return (
     <App centered={false}>
       <Split
-        fixed={false}
-        flex='right' >
+        fixed={true}
+        flex='right'>
           <MySideBar show={show}
              title={title}
              items={menuItems}
@@ -68,11 +69,9 @@ const Home = ({ nav: { title, menuItems, show, mainTitle},
                 />
               </Box>
             </Header>
-            <Box
-              alignSelf='center'
-              >
+            <Section>
               {children}
-            </Box>
+            </Section>
           </Article>
       </Split>
     </App>

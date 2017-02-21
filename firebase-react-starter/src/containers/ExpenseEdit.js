@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { Section } from 'grommet'
+import { Box } from 'grommet'
 
 import {
-  cancelExpense,
+  showExpenses,
   fetchExpense,
   updateExpense } from '../actions/ExpenseActionCreators'
 
@@ -18,13 +18,12 @@ class ExpenseEdit extends React.Component {
   }
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess) {
-      nextProps.cancelExpense()
+      nextProps.showExpenses()
     } else {
       this.props = nextProps
     }
-
-
   }
+
   render() {
       const {
         updateExpense,
@@ -33,16 +32,19 @@ class ExpenseEdit extends React.Component {
         initialValues
       } = this.props
 
+    if (!initialValues.eform) return null
     return (
-      <Section>
+      <Box align="center"
+        justify="center"
+        colorIndex="accent-1">
         <ExpenseEditForm onSubmit={updateExpense}
+            title="Edit Expense"
             onCancel={cancelExpense}
             items={expenseFields.items}
             at={expenseFields.at}
             initialValues={initialValues}
         />
-
-      </Section>
+      </Box>
     )
   }
 }
@@ -50,14 +52,16 @@ const mapStateToProps = (state, ownProps) => {
     return {
       expenseFields: state.expenseFields,
       updateSuccess : state.expenses.updateSuccess,
-      initialValues: state.expenses.expense,
+      initialValues: {
+        eform: state.expenses.expense,
+      },
       id: ownProps.params.key
     }
 }
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    cancelExpense,
+    showExpenses,
     fetchExpense,
     updateExpense
   }, dispatch)

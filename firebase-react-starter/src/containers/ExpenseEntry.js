@@ -6,7 +6,7 @@ import { closeStatus, newExpense } from '../actions/ExpenseActionCreators'
 import ExpenseForm  from '../components/ExpenseForm'
 //import ExpenseSummary from '../components/ExpenseSummary'
 import {
-          Section,
+          Box,
           Toast
        } from 'grommet'
 
@@ -21,15 +21,18 @@ const ShowStatus = ({added, onClose}) => {
 }
 
 const ExpenseEntry = props => (
-    <Section>
+    <Box align="center"
+      justify="center"
+      colorIndex="accent-1">
       <ShowStatus added={props.added}
         onClose={props.closeStatus} />
       <ExpenseForm onSubmit={props.addExpense}
+          title="New Expense"
           added={props.added}
           items={props.expenseFields.items}
           at={props.expenseFields.at}/>
 
-    </Section>
+    </Box>
 
 )
 

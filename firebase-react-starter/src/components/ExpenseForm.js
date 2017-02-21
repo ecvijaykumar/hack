@@ -1,35 +1,32 @@
 import React from 'react'
-import { reduxForm, Field } from 'redux-form'
-import { Form } from 'grommet'
+import { reduxForm, FormSection, Field } from 'redux-form'
+import { Anchor, Form, Footer } from 'grommet'
 
- import {
-           renderButton,
-           renderDate,
-           renderTextField,
-           renderComboField
-        } from './CustomComponents'
+ import { renderButton    } from './CustomComponents'
+import ExpenseFormSection from './ExpenseFormSection'
 
 import { expenseFieldsValidate } from '../lib/expense'
 
 const ExpenseForm = props => {
-  const { items, at, handleSubmit } = props
+  const { handleSubmit } = props
     return (
-        <Form pad="small" compact={true} onSubmit={handleSubmit}>
-          <Field name="amount" component={renderTextField}
-              label="Spent Amount ($)"/>
-          <Field name="item" component={renderComboField}
-              suggestions={items}
-              label="for item" />
-          <Field name="at" component={renderComboField}
-              suggestions={at}
-              label="at"/>
-          <Field name="on" component={renderDate}
-              label="on"/>
+        <Form
+            pad='small'
+            onSubmit={handleSubmit}>
+            <FormSection name='eform'>
+                {ExpenseFormSection(props)}
+            </FormSection>
 
-          <Field name="submit" component={renderButton}
-            onClick={handleSubmit}
-              type="submit"
-            label="Add"/>
+            <Footer  pad={{"vertical": "medium"}} justify='between'>
+              <Field name="submit" component={renderButton}
+                onClick={handleSubmit}
+                  type="submit"
+                label="Add"/>
+              <Anchor label='See Expenses'
+                  animateIcon={true}
+                  path='/showExpenses'
+                  primary={true} />
+             </Footer>
         </Form>
     )
 }

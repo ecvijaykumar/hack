@@ -4,6 +4,7 @@ import {
           Button,
           DateTime,
           FormField,
+          NumberInput,
           TextInput
        } from 'grommet'
 
@@ -23,8 +24,8 @@ export const renderTextField = ({
   </FormField>
 )
 
-/*
-const renderNumberField = ({name, label, meta: { touched, error},
+
+export const renderNumberField = ({name, label, meta: { touched, error},
                           input: { value, onChange}, ...custom}) => (
   <FormField error={touched && error} >
     <NumberInput id={name}
@@ -38,7 +39,7 @@ const renderNumberField = ({name, label, meta: { touched, error},
     />
   </FormField>
 )
-*/
+
 
 
 export const renderComboField = ({
@@ -68,7 +69,7 @@ export const renderButton = ({
   type,
   meta: { touched, error},
   onClick }) => (
-  <FormField>
+
     <Button accent={false}
       fill={true}
       label={label}
@@ -76,7 +77,7 @@ export const renderButton = ({
       onClick={onClick}
       primary={true}
     />
-  </FormField>
+
 )
 
 export const renderDate = props => {

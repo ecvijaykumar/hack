@@ -3,22 +3,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { deleteExpense,
-  editExpense,
-  fetchExpenses } from '../actions/ExpenseActionCreators'
+import { deleteExpense, fetchExpenses } from '../actions/ExpenseActionCreators'
 import ExpenseList from '../components/ExpenseList'
 import ExpenseSummary from '../components/ExpenseSummary'
 
 import Spinning from 'grommet/components/icons/Spinning';
 
-import { Article} from 'grommet'
+import { Article, Box, Section} from 'grommet'
 
-const renderExpenseList = ({expenses, count, onEdit, onDelete}) => {
+const renderExpenseList = ({expenses, count, onDelete}) => {
   if (count === 0) return null
   return (
       <ExpenseList expenses={expenses}
         count={count}
-        onEdit={onEdit}
         onDelete={onDelete}
       />
   )
@@ -42,11 +39,17 @@ class ExpenseApp extends React.Component {
       return this.renderExpenseFetching()
     }
     if (expenses.length === 0) return null
-    
+
     return (
       <Article>
-        {ExpenseSummary(expenses)}
+        <Box align="center">
+          {ExpenseSummary(expenses)}
+        </Box>
+
+        <Section>
         {renderExpenseList(this.props)}
+        </Section>
+
       </Article>
 
     )
@@ -63,7 +66,6 @@ const mapStateToProps = (state) => (
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     onDelete: deleteExpense,
-    onEdit: editExpense,
     fetchExpenses,
   }, dispatch)
 )

@@ -24,10 +24,9 @@ const getExpense = (items, key) => {
 }
 
 const updateExpense = (items, item) => {
-  console.log(items)
+
   let index = items.findIndex(e => e['.key'] === item['.key'])
   if (index === -1) return items
-  console.log("Updating expsense", items[index], item)
   items[index] = item
 
   return items
@@ -68,6 +67,7 @@ export const expenseReducer = (state = initialState, action) => {
     case FETCH_EXPENSE_FOR_KEY:
       return {
           ...state,
+          updateSuccess: false,
           expense: getExpense(state.items, action.payload.key)
       }
 
