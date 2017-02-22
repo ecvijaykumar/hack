@@ -17,9 +17,8 @@ import { decamelize} from '../lib/utils'
 import * as firebase from 'firebase'
 import uuid from 'uuid'
 
-const useFB = process.env.NODE_ENV || 'development'
 
-console.log(process.env.NODE_ENV)
+const useFB = (process.env.NODE_ENV === 'production') ?  true : false
 const uuidv4 = uuid.v4
 
 const formatDate = ds => {
@@ -49,23 +48,23 @@ export const loadPage = (url) =>{
   return x
 }
 
-const receiveExpenses = (items, total) => ({
+const receiveExpenses = (items) => ({
     type: RECEIVE_EXPENSES,
-    payload: items
+    payload: {
+      items
+    }
 })
 
 const fetchExpensesFromDB = (dispatch) => {
   const fbRef = firebase.database().ref('/expenses')
   fbRef.limitToLast(25).on('value', function(dataSnapshot) {
-    var items = [];
-    let total = 0
+    let items = []
     dataSnapshot.forEach(function(childSnapshot) {
       var item = childSnapshot.val();
       item['.key'] = childSnapshot.key;
-      total += parseInt(item.amount, 10)
       items.push(item);
     });
-    dispatch(receiveExpenses(items, total))
+    dispatch(receiveExpenses(items))
   })
 }
 
@@ -96,19 +95,21 @@ const updateLocalExpense = expense => ({
     payload: expense
 })
 
-const updateDBExpense = (expense) => {
+const updateDBExpense = (key, expense) => {
   const fbRef = firebase.database().ref('/expenses')
   let updates = {}
-  updates[expense['.key']] = expense
+  updates[key] = expense
   fbRef.update(updates)
 }
 
 export const updateExpense = (_expense) => {
   let key = _expense.eform['.key']
   let expense = expensePayload(_expense.eform)
-  expense['.key'] = key
+
   if (useFB) {
-    updateDBExpense(expense)
+    updateDBExpense(key, expense)
+  } else {
+    expense['.key'] = key
   }
   return (dispatch) => {
     dispatch(updateLocalExpense(expense))

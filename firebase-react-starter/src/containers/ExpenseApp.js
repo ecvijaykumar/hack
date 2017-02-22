@@ -38,7 +38,7 @@ class ExpenseApp extends React.Component {
     if (fetching) {
       return this.renderExpenseFetching()
     }
-    if (expenses.length === 0) return null
+    if (!expenses || expenses.length === 0) return null
 
     return (
       <Article>
