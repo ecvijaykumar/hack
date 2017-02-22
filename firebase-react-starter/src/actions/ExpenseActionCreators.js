@@ -18,7 +18,7 @@ import * as firebase from 'firebase'
 import uuid from 'uuid'
 
 
-const useFB = (process.env.NODE_ENV === 'production') ?  true : false
+const useFB = (process.env.NODE_ENV === 'development') ?  false : true
 const uuidv4 = uuid.v4
 
 const formatDate = ds => {
