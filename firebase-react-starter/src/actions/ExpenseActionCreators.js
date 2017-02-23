@@ -18,7 +18,7 @@ import * as firebase from 'firebase'
 import uuid from 'uuid'
 
 
-const useFB = (process.env.NODE_ENV === 'development') ?  false : true
+let useFB = (process.env.NODE_ENV === 'development') ?  false : true
 console.log(useFB)
 const uuidv4 = uuid.v4
 
@@ -177,4 +177,8 @@ export const showExpenses = () => {
   return (dispatch) => {
     dispatch(loadPage("/showExpenses"))
   }
+}
+export const toggleDB = (toggle) => {
+  useFB = toggle
+  console.log(useFB)
 }

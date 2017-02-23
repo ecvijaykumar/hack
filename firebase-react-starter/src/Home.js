@@ -6,22 +6,10 @@ import { bindActionCreators } from 'redux'
 
 import { App,
          Article,
-         Box,
-         Header,
          Section,
-         Search,
-         Split,
-         Title
+         Tabs,
+         Tab
        } from 'grommet'
-
-
-import Actions from 'grommet/components/icons/base/Actions'
-
-
-import MySideBar from './components/MySideBar'
-import NavItems from './components/NavItems'
-
-
 
 import { sideBarSelection,
          hideSideBar } from './actions/ExpenseActionCreators'
@@ -36,44 +24,26 @@ const Home = ({ nav: { title, menuItems, show, mainTitle},
     sideBarSelection(i, menu)
   }
 
+  const renderTabs = (menuItems) => {
+    if (!menuItems) return null
+    const tabs = menuItems.map((m, i) =>(
+      <Tab key={i} title={m.text}/>
+    ))
+    return tabs
+  }
   return (
     <App centered={false}>
-      <Split
-        fixed={true}
-        flex='right'>
-          <MySideBar show={show}
-             title={title}
-             items={menuItems}
-             onClose={hideSideBar}
-             onItemClick={onItemClick}
-            />
-          <Article>
-            <Header size="large"
-              justify="between">
-              <Title>
-              {mainTitle}
-              </Title>
-              <Box flex={true}
-                justify='end'
-                direction='row'
-                responsive={false}>
-                <Search inline={true}
-                  fill={true}
-                  size='medium'
-                  placeHolder='Search'
-                  dropAlign={{"right": "right"}} />
-                <NavItems icon={<Actions />}
-                  dropAlign={{"right": "right"}}
-                  items={menuItems}
-                  onItemClick={onItemClick}
-                />
-              </Box>
-            </Header>
-            <Section>
-              {children}
-            </Section>
-          </Article>
-      </Split>
+
+      <Tabs onActive={onItemClick}
+        responsive={false}>
+        {renderTabs(menuItems)}
+      </Tabs>
+      <Article>
+
+        <Section>
+          {children}
+        </Section>
+      </Article>
     </App>
   )
 }
