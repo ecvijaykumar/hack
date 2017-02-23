@@ -19,6 +19,7 @@ import uuid from 'uuid'
 
 
 const useFB = (process.env.NODE_ENV === 'development') ?  false : true
+console.log(useFB)
 const uuidv4 = uuid.v4
 
 const formatDate = ds => {
